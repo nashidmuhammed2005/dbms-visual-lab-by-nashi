@@ -93,13 +93,190 @@ section{padding:66px 0;border-top:1px solid #ffffff0b}.sectionTitle{display:flex
  #parallel-db .partition span{font-size:.68rem;padding:8px 2px}
 }
 
+/* Cinematic deep-space atmosphere */
+body{background:#02040b}
+body:before{z-index:-2;background:
+ radial-gradient(ellipse at 50% 38%,rgba(16,33,72,.34),transparent 47%),
+ radial-gradient(ellipse at 12% 72%,rgba(34,15,67,.25),transparent 42%),
+ radial-gradient(ellipse at 88% 16%,rgba(10,53,76,.2),transparent 40%),
+ linear-gradient(180deg,#02040b 0%,#050817 48%,#02040b 100%)}
+#starfield{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:1;mix-blend-mode:screen}
+body>header,body>main,body>footer{position:relative;z-index:1}
+body>header{z-index:30}
+@media(prefers-reduced-motion:reduce){#starfield{opacity:.8}}
+
 /* Fade the entire top navigation bar after the intro scrolls away */
 header{opacity:1;transform:translateY(0);filter:blur(0);transition:opacity .55s ease,transform .55s ease,filter .55s ease}
 header.header-faded{opacity:0;transform:translateY(-8px);filter:blur(4px);pointer-events:none}
 @media(prefers-reduced-motion:reduce){header{transition:none}}
+
+/* iOS-inspired liquid glass surfaces */
+:root{
+ --ios-glass:rgba(223,237,255,.075);
+ --ios-glass-strong:rgba(220,235,255,.115);
+ --ios-glass-line:rgba(224,239,255,.19);
+ --ios-glass-highlight:rgba(255,255,255,.26);
+}
+.glass,.panel,.info,.tier,.flowLab,.station,.worker,.archCard,.parallelTask,
+.stepInfo,.detailCards,.archCpu,.archNode,#parallel-db .diagram .node{
+ position:relative;
+ isolation:isolate;
+ overflow:hidden;
+ background:
+   linear-gradient(145deg,rgba(255,255,255,.105) 0%,rgba(255,255,255,.025) 36%,rgba(112,156,255,.045) 100%),
+   rgba(11,20,43,.48) !important;
+ border:1px solid var(--ios-glass-line) !important;
+ box-shadow:
+   inset 0 1px 0 rgba(255,255,255,.17),
+   inset 0 -1px 0 rgba(255,255,255,.035),
+   0 14px 42px rgba(0,0,0,.19),
+   0 2px 10px rgba(0,0,0,.12);
+ -webkit-backdrop-filter:blur(22px) saturate(155%);
+ backdrop-filter:blur(22px) saturate(155%);
+ transition:background .35s ease,border-color .35s ease,box-shadow .35s ease,transform .35s ease;
+}
+.glass:before,.panel:before,.info:before,.tier:before,.flowLab:before,
+.station:before,.worker:before,.archCard:before,.parallelTask:before,
+.stepInfo:before,.archCpu:before,.archNode:before,#parallel-db .diagram .node:before{
+ content:"";
+ position:absolute;inset:0 0 auto;height:46%;
+ pointer-events:none;z-index:-1;
+ background:linear-gradient(180deg,rgba(255,255,255,.105),rgba(255,255,255,.018) 46%,transparent);
+ opacity:.82;
+}
+.glass:after,.panel:after,.info:after,.tier:after,.flowLab:after,
+.station:after,.worker:after,.archCard:after,.parallelTask:after,
+.stepInfo:after,.archCpu:after,.archNode:after,#parallel-db .diagram .node:after{
+ content:"";
+ position:absolute;inset:1px;
+ border-radius:inherit;
+ pointer-events:none;
+ background:linear-gradient(125deg,rgba(255,255,255,.075),transparent 25%,transparent 72%,rgba(114,160,255,.055));
+ opacity:.7;
+}
+.info:hover,.tier:hover,.archCard:hover,.glass:hover,.panel:hover,
+.station:hover,.worker:hover,.parallelTask:hover{
+ border-color:rgba(190,221,255,.34) !important;
+ background:
+   linear-gradient(145deg,rgba(255,255,255,.145),rgba(255,255,255,.04) 45%,rgba(110,151,255,.08)),
+   rgba(13,24,52,.58) !important;
+ box-shadow:
+   inset 0 1px 0 rgba(255,255,255,.24),
+   inset 0 0 24px rgba(173,204,255,.035),
+   0 20px 52px rgba(0,0,0,.28),
+   0 0 28px rgba(88,139,255,.07);
+}
+#parallel-db .workers .worker{background:linear-gradient(145deg,rgba(255,255,255,.11),rgba(255,255,255,.025)),rgba(11,20,43,.5)!important}
+#parallel-db .diagram .flowRow{filter:drop-shadow(0 4px 14px rgba(76,142,255,.09))}
+button,.btn,.navlinks a{
+ -webkit-backdrop-filter:blur(14px) saturate(145%);
+ backdrop-filter:blur(14px) saturate(145%);
+}
+@media(max-width:700px){
+ .glass,.panel,.info,.tier,.flowLab,.station,.worker,.archCard,.parallelTask,
+ .stepInfo,.detailCards,.archCpu,.archNode,#parallel-db .diagram .node{
+   -webkit-backdrop-filter:blur(15px) saturate(145%);
+   backdrop-filter:blur(15px) saturate(145%);
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .glass,.panel,.info,.tier,.flowLab,.station,.worker,.archCard,.parallelTask,
+ .stepInfo,.detailCards,.archCpu,.archNode,#parallel-db .diagram .node{transition:none}
+}
+
+
+/* Refinement: natural Apple-like glass, with hierarchy instead of glass-on-glass boxes */
+.glass,.panel,.info,.tier,.station,.worker,.archCard,.parallelTask,
+.archCpu,.archNode,#parallel-db .diagram .node{
+ background:
+   linear-gradient(155deg,rgba(255,255,255,.075),rgba(255,255,255,.018) 48%,rgba(110,155,255,.025)),
+   rgba(9,16,32,.38) !important;
+ border-color:rgba(220,235,255,.13) !important;
+ box-shadow:
+   inset 0 1px 0 rgba(255,255,255,.12),
+   inset 0 0 0 1px rgba(255,255,255,.018),
+   0 10px 28px rgba(0,0,0,.16);
+ -webkit-backdrop-filter:blur(18px) saturate(135%);
+ backdrop-filter:blur(18px) saturate(135%);
+}
+.glass:before,.panel:before,.info:before,.tier:before,.station:before,
+.worker:before,.archCard:before,.parallelTask:before,.archCpu:before,
+.archNode:before,#parallel-db .diagram .node:before{height:32%;opacity:.55}
+.glass:after,.panel:after,.info:after,.tier:after,.station:after,
+.worker:after,.archCard:after,.parallelTask:after,.archCpu:after,
+.archNode:after,#parallel-db .diagram .node:after{opacity:.35}
+
+/* These are layout wrappers, not cards: remove the unwanted outer glass box */
+.flowLab,.stepInfo,.detailCards{
+ background:transparent !important;
+ border:0 !important;
+ box-shadow:none !important;
+ -webkit-backdrop-filter:none !important;
+ backdrop-filter:none !important;
+ overflow:visible !important;
+}
+.flowLab:before,.flowLab:after,.stepInfo:before,.stepInfo:after,
+.detailCards:before,.detailCards:after{display:none !important}
+.flowLab{padding:0 !important}
+.stepInfo{margin-top:20px}
+.detailCards{gap:16px}
+.explainCard,.traceCard{
+ background:linear-gradient(150deg,rgba(255,255,255,.055),rgba(255,255,255,.012)),rgba(7,13,27,.34);
+ border-color:rgba(220,235,255,.12);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 8px 24px rgba(0,0,0,.12);
+ -webkit-backdrop-filter:blur(16px) saturate(130%);
+ backdrop-filter:blur(16px) saturate(130%);
+}
+.archVisual{
+ background:rgba(5,10,23,.22);
+ border-color:rgba(220,235,255,.09);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.045);
+}
+.info:hover,.tier:hover,.archCard:hover,.glass:hover,.panel:hover,
+.station:hover,.worker:hover,.parallelTask:hover{
+ transform:translateY(-3px);
+ border-color:rgba(210,231,255,.24) !important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 15px 36px rgba(0,0,0,.22),0 0 22px rgba(104,148,255,.045);
+}
+@media(max-width:700px){
+ .glass,.panel,.info,.tier,.station,.worker,.archCard,.parallelTask,
+ .archCpu,.archNode,#parallel-db .diagram .node{
+   -webkit-backdrop-filter:blur(13px) saturate(125%);
+   backdrop-filter:blur(13px) saturate(125%);
+ }
+}
+
+
+/* Keep the request-journey lab as a visible surface; only generic layout wrappers stay transparent */
+#client-server .flowLab{
+ background:linear-gradient(150deg,rgba(255,255,255,.045),rgba(255,255,255,.008) 55%,rgba(83,125,210,.025)),rgba(7,13,28,.27) !important;
+ border:1px solid rgba(220,235,255,.13) !important;
+ border-radius:24px;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 12px 34px rgba(0,0,0,.15) !important;
+ overflow:hidden !important;
+ -webkit-backdrop-filter:blur(8px) saturate(125%) !important;
+ backdrop-filter:blur(8px) saturate(125%) !important;
+ padding:0 !important;
+}
+#client-server .flowLab:before{display:block !important;height:28%;opacity:.38}
+#client-server .flowLab:after{display:block !important;opacity:.22}
+.glass,.panel,.info,.tier,.station,.worker,.archCard,.parallelTask,
+.archCpu,.archNode,#parallel-db .diagram .node{
+ -webkit-backdrop-filter:blur(10px) saturate(125%);
+ backdrop-filter:blur(10px) saturate(125%);
+}
+@media(max-width:700px){
+ .glass,.panel,.info,.tier,.station,.worker,.archCard,.parallelTask,
+ .archCpu,.archNode,#parallel-db .diagram .node,#client-server .flowLab{
+   -webkit-backdrop-filter:blur(7px) saturate(120%);
+   backdrop-filter:blur(7px) saturate(120%);
+ }
+}
+
 </style>
 </head>
 <body>
+<canvas id="starfield" aria-hidden="true"></canvas>
 <header><div class="wrap nav"><a class="logo" href="#top">DBMS <span>/ VISUAL LAB</span></a><nav class="navlinks"><a href="#client-server">Client–Server</a><a href="#parallel-db">Parallel Databases</a></nav></div></header>
 <main class="wrap" id="top">
 <section class="hero" style="border:0">
@@ -246,6 +423,128 @@ let parallelKind="inter",parallelBusy=false;
 function setParallelKind(kind){parallelKind=kind;document.querySelectorAll(".parallelTab").forEach(b=>b.classList.toggle("active",b.dataset.kind===kind));$("#parallelSource").textContent=kind==="inter"?"Several independent queries arrive":"One large query arrives";$("#parallelTrack").innerHTML=kind==="inter"?'<div class="parallelTask">Query A<small>Customer lookup</small></div><div class="parallelTask">Query B<small>Sales report</small></div><div class="parallelTask">Query C<small>Inventory check</small></div>':'<div class="parallelTask">Task A<small>Partition 1</small></div><div class="parallelTask">Task B<small>Partition 2</small></div><div class="parallelTask">Task C<small>Partition 3</small></div>';$("#parallelMerge").textContent=kind==="inter"?"Different queries run concurrently":"Partial results are combined into one answer";$("#parallelExplain").textContent=kind==="inter"?"Inter-query parallelism: different queries execute at the same time. Useful when many users submit separate requests.":"Intra-query parallelism: one query is divided into tasks that execute at the same time. The partial results are combined to produce one answer."}
 document.querySelectorAll(".parallelTab").forEach(b=>b.addEventListener("click",()=>setParallelKind(b.dataset.kind)));
 $("#runParallelism")?.addEventListener("click",async()=>{if(parallelBusy)return;parallelBusy=true;const btn=$("#runParallelism"),tasks=[...$("#parallelTrack").children];btn.disabled=true;tasks.forEach(t=>t.classList.remove("run","done"));$("#parallelMerge").classList.remove("run");for(const task of tasks){task.classList.add("run");await wait(1250);task.classList.remove("run");task.classList.add("done")}$("#parallelMerge").classList.add("run");$("#parallelMerge").textContent=parallelKind==="inter"?"All three separate queries completed ✓":"Partial results combined — one final answer ✓";await wait(300);btn.disabled=false;parallelBusy=false;});
+
+// Cinematic multi-depth starfield: dense stars, soft nebulae, parallax and shooting stars.
+(()=>{
+ const canvas=document.getElementById("starfield");
+ if(!canvas)return;
+ const ctx=canvas.getContext("2d",{alpha:true});
+ if(!ctx)return;
+ const reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+ let w=0,h=0,dpr=1,raf=0,last=0,stars=[],shooters=[],nebulaCanvas=null,nebulaCtx=null;
+ let pointer={x:0,y:0,tx:0,ty:0};
+ const rand=(a,b)=>a+Math.random()*(b-a);
+ const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+ function makeNebula(){
+   nebulaCanvas=document.createElement("canvas");
+   nebulaCanvas.width=Math.max(1,Math.round(w*.72));nebulaCanvas.height=Math.max(1,Math.round(h*.72));
+   nebulaCtx=nebulaCanvas.getContext("2d");
+   nebulaCtx.clearRect(0,0,nebulaCanvas.width,nebulaCanvas.height);
+   // Layered, blurred cosmic clouds; this is intentionally atmospheric rather than a flat gradient.
+   for(let i=0;i<26;i++){
+     const x=rand(-nebulaCanvas.width*.15,nebulaCanvas.width*1.15);
+     const y=rand(-nebulaCanvas.height*.15,nebulaCanvas.height*1.15);
+     const r=rand(nebulaCanvas.width*.055,nebulaCanvas.width*.24);
+     const colors=["rgba(49,79,174,","rgba(65,33,125,","rgba(22,104,129,","rgba(115,72,170,","rgba(42,65,111,"];
+     const color=colors[Math.floor(Math.random()*colors.length)];
+     const g=nebulaCtx.createRadialGradient(x,y,0,x,y,r);
+     g.addColorStop(0,color+rand(.035,.095)+")");g.addColorStop(.42,color+rand(.018,.04)+")");g.addColorStop(1,color+"0)");
+     nebulaCtx.fillStyle=g;nebulaCtx.fillRect(x-r,y-r,r*2,r*2);
+   }
+ }
+ function resize(){
+   w=window.innerWidth;h=window.innerHeight;dpr=Math.min(window.devicePixelRatio||1,2);
+   canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);
+   canvas.style.width=w+"px";canvas.style.height=h+"px";ctx.setTransform(dpr,0,0,dpr,0,0);
+   makeNebula();
+   // Four depth planes with a high star density and a small number of brilliant foreground stars.
+   const area=w*h;
+   const counts=[Math.min(1800,Math.max(650,Math.floor(area/1250))),Math.min(700,Math.max(260,Math.floor(area/3500))),Math.min(240,Math.max(90,Math.floor(area/10000))),Math.min(46,Math.max(18,Math.floor(area/55000)))];
+   stars=[];
+   counts.forEach((count,layer)=>{for(let i=0;i<count;i++){
+     const bright=layer===3||Math.random()>(layer===0?.985:.965);
+     stars.push({x:Math.random()*w,y:Math.random()*h,layer,r:layer===0?rand(.18,.65):layer===1?rand(.28,.9):layer===2?rand(.45,1.35):rand(.8,2.15),
+       alpha:layer===0?rand(.14,.45):layer===1?rand(.18,.62):layer===2?rand(.25,.78):rand(.45,.95),
+       phase:rand(0,Math.PI*2),speed:rand(.45,1.8),bright,tone:Math.random(),drift:rand(.12,.55)*(layer+1)});
+   }});
+   shooters=[];
+   draw(0,true);
+ }
+ function drawNebula(t){
+   if(!nebulaCanvas)return;
+   const ox=Math.sin(t*.000025)*w*.018+pointer.x*.012;
+   const oy=Math.cos(t*.000021)*h*.02+pointer.y*.012;
+   ctx.save();ctx.globalAlpha=.9;ctx.globalCompositeOperation="screen";
+   ctx.drawImage(nebulaCanvas,ox-w*.02,oy-h*.02,w*1.04,h*1.04);
+   // broad translucent galactic haze across the middle distance
+   const haze=ctx.createLinearGradient(0,h*.2,w,h*.9);
+   haze.addColorStop(0,"rgba(21,35,92,0)");haze.addColorStop(.45,"rgba(41,50,113,.075)");haze.addColorStop(.7,"rgba(24,82,105,.045)");haze.addColorStop(1,"rgba(21,35,92,0)");
+   ctx.fillStyle=haze;ctx.fillRect(0,0,w,h);ctx.restore();
+ }
+ function drawStar(s,t,staticFrame){
+   const depth=(s.layer+1)*.25;
+   const px=pointer.x*depth*.018,py=pointer.y*depth*.018;
+   const x=s.x+px,y=s.y+py;
+   const twinkle=staticFrame?1:(.58+.42*(.5+.5*Math.sin(t*.001*s.speed+s.phase)));
+   const a=clamp(s.alpha*twinkle,0,1);
+   let color=s.tone>.91?[144,205,255]:s.tone>.79?[153,132,255]:s.tone>.65?[104,231,224]:[224,237,255];
+   if(s.bright){
+     const glow=s.r*(s.layer===3?12:7);
+     const g=ctx.createRadialGradient(x,y,0,x,y,glow);
+     g.addColorStop(0,`rgba(${color.join(",")},${a*.22})`);g.addColorStop(.18,`rgba(${color.join(",")},${a*.075})`);g.addColorStop(1,`rgba(${color.join(",")},0)`);
+     ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,glow,0,Math.PI*2);ctx.fill();
+   }
+   ctx.fillStyle=`rgba(${color.join(",")},${a})`;ctx.beginPath();ctx.arc(x,y,s.r*(s.bright?1.15:1),0,Math.PI*2);ctx.fill();
+   if(s.layer===3&&s.bright){
+     ctx.strokeStyle=`rgba(${color.join(",")},${a*.35})`;ctx.lineWidth=.55;
+     ctx.beginPath();ctx.moveTo(x-s.r*3.7,y);ctx.lineTo(x+s.r*3.7,y);ctx.moveTo(x,y-s.r*3.7);ctx.lineTo(x,y+s.r*3.7);ctx.stroke();
+   }
+   if(!reduced&&!staticFrame){
+     s.y-=s.drift*.035*(s.layer+1);s.x+=Math.sin(t*.00007+s.phase)*.012*(s.layer+1);
+     if(s.y<-4){s.y=h+4;s.x=Math.random()*w}
+     if(s.x<-4)s.x=w+4;if(s.x>w+4)s.x=-4;
+   }
+ }
+ function spawnShooter(){
+   if(shooters.length>=3)return;
+   const fromRight=Math.random()>.5;
+   shooters.push({x:fromRight?rand(w*.45,w*1.08):rand(0,w*.6),y:rand(-h*.05,h*.55),vx:fromRight?-rand(7,15):rand(7,15),vy:rand(3,7),life:0,max:rand(35,68),width:rand(.7,1.8)});
+ }
+ function drawShooters(){
+   for(let i=shooters.length-1;i>=0;i--){
+     const s=shooters[i],tail=16;
+     const g=ctx.createLinearGradient(s.x,s.y,s.x-s.vx*tail,s.y-s.vy*tail);
+     g.addColorStop(0,"rgba(224,244,255,.95)");g.addColorStop(.14,"rgba(149,196,255,.55)");g.addColorStop(1,"rgba(105,151,255,0)");
+     ctx.strokeStyle=g;ctx.lineWidth=s.width;ctx.beginPath();ctx.moveTo(s.x,s.y);ctx.lineTo(s.x-s.vx*tail,s.y-s.vy*tail);ctx.stroke();
+     const glow=ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,10);
+     glow.addColorStop(0,"rgba(240,250,255,.9)");glow.addColorStop(1,"rgba(150,200,255,0)");
+     ctx.fillStyle=glow;ctx.beginPath();ctx.arc(s.x,s.y,10,0,Math.PI*2);ctx.fill();
+     s.x+=s.vx;s.y+=s.vy;s.life++;
+     if(s.life>s.max||s.x<-200||s.x>w+200||s.y>h+200)shooters.splice(i,1);
+   }
+ }
+ function draw(time,staticFrame=false){
+   ctx.clearRect(0,0,w,h);
+   // A deep background wash gives the star layers genuine depth.
+   const base=ctx.createRadialGradient(w*.5,h*.38,0,w*.5,h*.38,Math.max(w,h)*.85);
+   base.addColorStop(0,"rgba(10,18,43,.16)");base.addColorStop(.6,"rgba(4,7,20,.12)");base.addColorStop(1,"rgba(1,2,8,.05)");
+   ctx.fillStyle=base;ctx.fillRect(0,0,w,h);
+   drawNebula(time);
+   // Draw far stars first; foreground stars have larger parallax and more bloom.
+   for(let layer=0;layer<4;layer++)for(const s of stars)if(s.layer===layer)drawStar(s,time,staticFrame);
+   if(!reduced&&!staticFrame){
+     if(time-last>rand(1500,3200)){spawnShooter();last=time}
+     drawShooters();
+     pointer.x+=(pointer.tx-pointer.x)*.025;pointer.y+=(pointer.ty-pointer.y)*.025;
+     raf=requestAnimationFrame(draw);
+   }
+ }
+ window.addEventListener("pointermove",e=>{pointer.tx=(e.clientX/w-.5)*2;pointer.ty=(e.clientY/h-.5)*2},{passive:true});
+ resize();
+ if(!reduced)raf=requestAnimationFrame(draw);
+ let resizeTimer;window.addEventListener("resize",()=>{cancelAnimationFrame(raf);clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{resize();if(!reduced)raf=requestAnimationFrame(draw)},180)},{passive:true});
+ document.addEventListener("visibilitychange",()=>{if(document.hidden)cancelAnimationFrame(raf);else if(!reduced)raf=requestAnimationFrame(draw)});
+})(); 
 
 // Reveal sections, but never leave content hidden if observers are unsupported.
 try{if("IntersectionObserver" in window){const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add("show");observer.unobserve(e.target)}}),{threshold:.08});document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));}else{document.querySelectorAll(".reveal").forEach(el=>el.classList.add("show"));}}catch(e){document.querySelectorAll(".reveal").forEach(el=>el.classList.add("show"))}
