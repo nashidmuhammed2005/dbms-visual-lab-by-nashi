@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DBMS Visual Lab | Client–Server & Parallel Databases</title>
+<style>
+:root{--bg:#07101c;--surface:#0e1b2b;--surface2:#13263b;--line:#263d56;--text:#eef6ff;--muted:#a0b4cc;--cyan:#5cf0d5;--blue:#76aaff;--purple:#b5a0ff;--green:#8df3b0;--red:#ff8eaa}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:90px}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.65 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;overflow-x:hidden}body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(ellipse at 15% 0%,#163d5638,transparent 38%),radial-gradient(ellipse at 95% 35%,#213d6525,transparent 38%)}
+button,select{font:inherit}button{border:1px solid #36536e;background:#162a40;color:var(--text);padding:11px 15px;border-radius:12px;cursor:pointer;transition:transform .2s,border-color .2s,box-shadow .2s}button:hover{transform:translateY(-2px);border-color:var(--cyan);box-shadow:0 8px 24px #0004}button:disabled{opacity:.55;cursor:wait;transform:none}.primary{background:linear-gradient(120deg,#137e83,#285bc0);border:0;font-weight:750}.wrap{width:min(1160px,calc(100% - 40px));margin:auto}
+header{position:sticky;top:0;z-index:30;background:#07101ce8;backdrop-filter:blur(18px);border-bottom:1px solid #ffffff12}.nav{min-height:68px;display:flex;align-items:center;justify-content:space-between;gap:20px}.logo{font-weight:900;letter-spacing:.05em}.logo span{color:var(--cyan)}.nav a{color:var(--muted);text-decoration:none;font-size:.92rem;padding:8px 11px;border-radius:9px}.nav a:hover,.nav a.active{color:var(--text);background:#ffffff0b}.navlinks{display:flex;gap:5px;flex-wrap:wrap}
+.hero{min-height:70vh;display:grid;grid-template-columns:1fr .9fr;gap:36px;align-items:center;padding:60px 0 70px}.eyebrow{font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);font-weight:850}.hero h1{font-size:clamp(2.8rem,6vw,5rem);line-height:1.02;letter-spacing:-.055em;margin:17px 0}.gradient{color:transparent;background:linear-gradient(100deg,#fff,#5cf0d5 55%,#76aaff);background-clip:text}.hero p{color:var(--muted);max-width:590px;font-size:1.08rem}.heroActions{display:flex;gap:12px;flex-wrap:wrap;margin-top:25px}.visual{height:390px;position:relative;display:grid;place-items:center;overflow:hidden;border:1px solid #ffffff18;border-radius:28px;background:linear-gradient(145deg,#10263a,#0b1727);box-shadow:0 30px 90px #0005}.visual:before{content:"";position:absolute;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,#55f0d52c,transparent 68%);animation:breathe 4s infinite}.ring{position:absolute;width:280px;height:130px;border:1px solid #55f0d55a;border-radius:50%;animation:orbit 16s linear infinite}.ring.r2{width:340px;height:170px;border-color:#76aaff55;animation-direction:reverse;animation-duration:22s}.floatNode{position:absolute;z-index:2;padding:14px 18px;text-align:center;border:1px solid #5cf0d56b;border-radius:14px;background:#132940;box-shadow:0 12px 30px #0005;animation:float 5s ease-in-out infinite}.floatNode small{display:block;color:var(--muted)}.fn1{left:7%;top:20%}.fn2{right:7%;top:42%;animation-delay:-1.3s}.fn3{left:25%;bottom:14%;animation-delay:-2.4s}.particle{position:absolute;width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 18px var(--cyan);animation:pulse 2s infinite}.p1{top:26%;right:24%}.p2{bottom:24%;right:19%;animation-delay:.7s}
+section{padding:66px 0;border-top:1px solid #ffffff0b}.sectionTitle{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:28px}.sectionTitle h2{font-size:clamp(2rem,4vw,3.2rem);line-height:1.1;letter-spacing:-.045em;margin:8px 0}.sectionTitle p{max-width:510px;color:var(--muted);margin:0}.panel{border:1px solid #ffffff15;border-radius:22px;background:linear-gradient(145deg,#112238,#0c1828);padding:24px}.twoCol{display:grid;grid-template-columns:.72fr 1.28fr;gap:17px}.controls{display:flex;flex-direction:column;gap:14px}.controls h3{margin:0}.muted{color:var(--muted)}label{font-size:.9rem;color:var(--muted)}select{display:block;width:100%;margin-top:6px;background:#081523;color:var(--text);border:1px solid #2d455e;border-radius:10px;padding:11px}.console{background:#06101b;border:1px solid #20384e;border-radius:13px;padding:13px 15px;color:#a8f5d4;font: .84rem/1.8 ui-monospace,SFMono-Regular,Consolas,monospace;min-height:94px;white-space:pre-wrap;overflow-wrap:anywhere}.status{font-size:.9rem;color:var(--cyan);min-height:25px}.diagram{position:relative;min-height:380px;overflow:hidden;display:flex;flex-direction:column;justify-content:center;gap:25px}.flowRow{display:flex;align-items:center;justify-content:center;gap:clamp(6px,1.6vw,18px);flex-wrap:wrap}.node{position:relative;z-index:2;min-width:112px;max-width:155px;padding:16px 12px;text-align:center;border:1px solid #3c607c;border-radius:15px;background:#132b43;transition:border-color .35s,box-shadow .35s,transform .35s}.node b{display:block}.node small{display:block;color:var(--muted);font-size:.78rem;margin-top:3px}.node.lit{border-color:var(--cyan);box-shadow:0 0 28px #5cf0d52c;transform:translateY(-3px)}.node.return.lit{border-color:var(--green);box-shadow:0 0 28px #8df3b02a}.arrow{font-size:1.6rem;color:#5cf0d5;position:relative}.arrow.travel:after{content:"";position:absolute;left:0;top:50%;width:8px;height:8px;border-radius:50%;background:white;box-shadow:0 0 14px var(--cyan);animation:travel .85s linear infinite}.explain{border-top:1px solid #ffffff12;padding-top:15px;color:var(--muted);min-height:58px}.badge{display:inline-block;font-size:.75rem;color:var(--cyan);text-transform:uppercase;letter-spacing:.15em;font-weight:800}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:17px}.info{padding:21px;border:1px solid #ffffff14;background:#0e1c2d;border-radius:17px}.info h3{margin:8px 0}.info p{color:var(--muted);margin-bottom:0}.tierGrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:17px}.tier{padding:23px;border:1px solid #ffffff16;background:#0e1c2d;border-radius:18px}.miniFlow{display:flex;align-items:center;justify-content:center;gap:7px;margin:16px 0;flex-wrap:wrap}.miniBox{border:1px solid #4a7188;border-radius:8px;background:#142b40;padding:9px 11px;font-size:.78rem;text-align:center}.sectionNote{border-left:3px solid var(--cyan);padding:10px 15px;background:#5cf0d508;color:var(--muted);border-radius:0 10px 10px 0;margin-top:17px}
+.workers{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.worker{padding:14px 10px;text-align:center;border:1px solid #2b4d66;border-radius:13px;background:#10263a;opacity:.35;transform:scale(.97);transition:opacity .4s,transform .4s,border-color .4s,box-shadow .4s}.worker.active{opacity:1;transform:scale(1);border-color:var(--cyan);box-shadow:0 0 23px #5cf0d51b}.worker.done{border-color:var(--green)}.worker small{display:block;color:var(--muted);font-size:.75rem;min-height:39px}.progress{height:5px;background:#263c51;border-radius:8px;margin-top:10px;overflow:hidden}.progress i{display:block;width:0;height:100%;background:linear-gradient(90deg,var(--cyan),var(--blue));transition:width 2.8s ease}.mergeLine{text-align:center;color:var(--cyan);font-size:1.5rem;animation:bob 1.5s infinite}.result{width:min(270px,100%);margin:auto;text-align:center;padding:16px;border:1px dashed #446780;border-radius:14px;background:#0a1a29}.result.ready{border-style:solid;border-color:var(--green);box-shadow:0 0 25px #8df3b01b}.partition{display:flex;gap:4px;margin:14px 0}.partition span{flex:1;text-align:center;padding:10px 3px;border:1px solid #32566e;border-radius:8px;background:#142a3d;color:var(--muted);font-size:.77rem;transition:all .35s}.partition span.on{background:#12443e;border-color:var(--cyan);color:white;transform:translateY(-4px)}.types{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:17px}.architecture{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:17px}.architecture .info{height:100%}.footer{padding:30px 0;color:var(--muted);text-align:center;border-top:1px solid #ffffff12;font-size:.85rem}.reveal{opacity:0;transform:translateY(22px);transition:opacity .8s ease,transform .8s ease}.reveal.show{opacity:1;transform:translateY(0)}@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-13px)}}@keyframes orbit{to{transform:rotate(360deg)}}@keyframes breathe{50%{transform:scale(1.18);opacity:.6}}@keyframes pulse{50%{opacity:.2;transform:scale(.7)}}@keyframes travel{from{left:0;opacity:0}15%{opacity:1}to{left:calc(100% - 8px);opacity:0}}@keyframes bob{50%{transform:translateY(5px);opacity:.6}}
+@media(max-width:820px){.hero{grid-template-columns:1fr;padding-top:40px}.visual{height:320px}.twoCol{grid-template-columns:1fr}.sectionTitle{display:block}.sectionTitle p{margin-top:12px}.cards,.types,.architecture{grid-template-columns:1fr}.workers{grid-template-columns:repeat(2,1fr)}.nav{align-items:flex-start;flex-direction:column;padding:12px 0}.navlinks{padding-bottom:5px}.tierGrid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.reveal{opacity:1;transform:none}}
+
+/* Glassmorphism, shared headings and working visual labs */
+.glass,.panel,.info,.tier,.flowLab{background:linear-gradient(135deg,rgba(24,49,73,.72),rgba(8,20,34,.78));backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-color:rgba(145,205,235,.2);box-shadow:0 18px 55px rgba(0,0,0,.18),inset 0 1px rgba(255,255,255,.045)}
+.info,.tier,.station,.worker,.archCard,.parallelTask{transition:transform .28s ease,border-color .28s ease,box-shadow .28s ease,background .28s ease}
+.info:hover,.tier:hover,.archCard:hover{transform:translateY(-6px);border-color:rgba(92,240,213,.55);box-shadow:0 20px 50px rgba(0,0,0,.3),0 0 24px rgba(92,240,213,.07)}
+.commonHeading{margin:34px 0 16px}.commonHeading h3{font-size:clamp(1.45rem,3vw,2rem);margin:7px 0}.commonHeading p{margin:0;max-width:740px}
+.flowLab{border:1px solid rgba(120,180,220,.25);border-radius:24px;overflow:hidden}
+.labTop,.labFooter{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:18px 22px;border-bottom:1px solid rgba(255,255,255,.08);flex-wrap:wrap}
+.labFooter{border-top:1px solid rgba(255,255,255,.08);border-bottom:0}
+.labControls{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.labControls select{margin:0;min-width:180px}
+.smallgap{font-size:.82rem;margin-top:5px}.srOnly{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+.labCanvas{padding:24px;position:relative;overflow:hidden}.networkGrid{position:absolute;inset:0;pointer-events:none;opacity:.22;background-image:linear-gradient(#4e799a20 1px,transparent 1px),linear-gradient(90deg,#4e799a20 1px,transparent 1px);background-size:28px 28px}
+.journey{position:relative;display:grid;grid-template-columns:1fr 50px 1fr 50px 1fr;align-items:center;gap:10px;z-index:1}
+.station{min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:16px 10px;border:1px solid rgba(106,165,200,.28);border-radius:19px;background:linear-gradient(145deg,rgba(28,58,83,.75),rgba(10,24,40,.84));position:relative}
+.stationIcon{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;font-size:25px;background:rgba(46,97,120,.4);border:1px solid rgba(92,240,213,.28)}
+.station b{font-size:.98rem}.station small{color:#a4b9cd;font-size:.76rem}.station .num{position:absolute;top:10px;left:12px;color:#7d9bb5;font-size:.7rem;font-weight:800}
+.station.active{border-color:#5cf0d5;box-shadow:0 0 35px #5cf0d525;transform:translateY(-5px)}.station.active .stationIcon{animation:popNode .5s;background:#145047}
+.station.complete{border-color:#8df3b0}
+.wire{height:2px;background:#31516b;position:relative}.wire:after{content:"";position:absolute;left:0;top:-3px;width:8px;height:8px;border-radius:50%;background:#5cf0d5;box-shadow:0 0 14px #5cf0d5;opacity:0}.wire.flowing:after{opacity:1;animation:packetTravel 1s linear infinite}
+.wireLabel{position:absolute;left:50%;top:-23px;transform:translateX(-50%);font-size:.68rem;color:#a1b8cc;white-space:nowrap}
+.returnBanner{display:flex;align-items:center;justify-content:center;gap:14px;margin:23px 3% 0;padding:14px 18px;border:1px solid rgba(141,243,176,.24);background:rgba(22,75,63,.18);border-radius:16px;color:#bcefd5;position:relative;overflow:hidden}
+.returnBanner>span:first-child{font-size:1.6rem}.returnBanner small{display:block;color:#9db8c7;margin-top:3px}.returnPulse{position:absolute;bottom:0;left:0;width:0;height:2px;background:linear-gradient(90deg,#76aaff,#8df3b0)}.returnBanner.running .returnPulse{animation:returnProgress 1.4s linear infinite}
+.stepInfo{display:grid;grid-template-columns:1.15fr .85fr;gap:14px;margin-top:20px;position:relative;z-index:1}.explainCard,.traceCard{border:1px solid rgba(120,180,220,.2);border-radius:16px;background:rgba(5,16,28,.58);padding:18px}.stepCount{font-size:.7rem;letter-spacing:.14em;color:#5cf0d5;font-weight:800}.explainCard h3{margin:8px 0}.explainCard p{color:#a6bad0;margin:0}.traceCard{font:.8rem/1.8 ui-monospace,Consolas,monospace;color:#9df0ce;white-space:pre-wrap;min-height:130px}.flowLegend{display:flex;gap:16px;flex-wrap:wrap;margin-top:15px;color:#9fb4cb;font-size:.78rem}.legendDot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}.progressDots{display:flex;gap:6px}.progressDots i{width:7px;height:7px;border-radius:10px;background:#34516b}.progressDots i.on{width:22px;background:#5cf0d5}
+.detailCards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:16px}.cardIcon{font-size:1.7rem}.detailCards .info p{margin-bottom:0}
+.archVisual{min-height:190px;border:1px solid rgba(120,180,220,.18);border-radius:15px;background:rgba(5,16,28,.45);padding:13px;display:flex;flex-wrap:wrap;align-content:center;align-items:center;justify-content:center;gap:8px;margin:14px 0}
+.archCpu,.archNode{padding:10px 12px;border:1px solid rgba(92,240,213,.4);background:rgba(22,65,78,.45);border-radius:10px;text-align:center;font-size:.8rem;animation:floatNode 4s ease-in-out infinite}.archCpu:nth-child(2),.archNode:nth-child(2){animation-delay:-1s}.archCpu:nth-child(3),.archNode:nth-child(3){animation-delay:-2s}
+.archNode small{display:block;color:#a4b9cd;font-size:.68rem;margin-top:3px}.archBus{flex-basis:100%;text-align:center;padding:10px;border:1px dashed #76aaff88;border-radius:9px;color:#b6d2f4;background:#76aaff0b}.archDisk{flex-basis:100%;text-align:center;padding:10px;border:1px solid #b5a0ff77;border-radius:9px;color:#d3c9ff;background:#b5a0ff0b}.threeNodes{gap:6px}.threeNodes .archNode{flex:1;min-width:70px;padding:10px 5px}
+.parallelismLab{margin-top:15px}.parallelTabs{display:flex;gap:9px;flex-wrap:wrap;align-items:center}.parallelTab.active{border-color:#5cf0d5;background:#15443f}.parallelTabs #runParallelism{margin-left:auto}
+.parallelViz{margin-top:22px;padding:20px;border:1px solid rgba(120,180,220,.18);border-radius:17px;background:rgba(4,15,26,.48);text-align:center;overflow:hidden}
+.parallelSource{font-weight:750;color:#eaf6ff;margin-bottom:20px}.parallelTrack{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:center}
+.parallelTask{padding:17px 9px;border:1px solid #385e78;border-radius:13px;background:rgba(25,52,76,.72);opacity:.65;transform:scale(.97)}.parallelTask.run{opacity:1;border-color:#5cf0d5;transform:translateY(-5px);box-shadow:0 0 25px #5cf0d51b;animation:taskGlow 1.2s ease-in-out infinite alternate}.parallelTask.done{border-color:#8df3b0;opacity:1}
+.parallelMerge{margin-top:18px;padding:12px;border:1px dashed #49667e;border-radius:11px;color:#a9bfd2}.parallelMerge.run{border-color:#8df3b0;color:#c4f5d9;background:#8df3b008}
+@keyframes packetTravel{from{left:0;opacity:0}15%{opacity:1}to{left:calc(100% - 8px);opacity:0}}@keyframes returnProgress{0%{width:0;left:0}100%{width:100%;left:0}}@keyframes popNode{50%{transform:scale(1.08)}}@keyframes floatNode{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}@keyframes taskGlow{to{box-shadow:0 0 27px #5cf0d530}}
+@media(max-width:900px){.journey{grid-template-columns:1fr;gap:9px}.wire{height:24px;width:2px;justify-self:center}.wire:after{left:-3px;top:0}.wire.flowing:after{animation:packetVertical .8s linear infinite}.wireLabel{left:14px;top:2px;transform:none}.station{min-height:110px}.stepInfo{grid-template-columns:1fr}.detailCards{grid-template-columns:1fr 1fr}.returnBanner{margin-top:14px}}
+@keyframes packetVertical{from{top:0;opacity:0}20%{opacity:1}to{top:calc(100% - 8px);opacity:0}}
+@media(max-width:560px){.labCanvas{padding:13px}.labTop,.labFooter{padding:14px}.detailCards{grid-template-columns:1fr}.parallelTrack{grid-template-columns:1fr}.parallelTabs #runParallelism{margin-left:0}.labControls select{min-width:145px;max-width:100%}}
+
+/* Precision layout pass: center worker cards for every selected worker count */
+#parallel-db .diagram{align-items:stretch}
+#parallel-db .workers{
+ display:flex;flex-wrap:wrap;justify-content:center;align-items:stretch;
+ gap:14px;width:100%;min-width:0;margin:4px auto 0;
+}
+#parallel-db .workers .worker{
+ flex:0 1 150px;width:150px;max-width:calc(50% - 8px);min-width:0;
+ box-sizing:border-box;min-height:112px;display:flex;flex-direction:column;
+ justify-content:space-between;align-items:stretch;gap:6px;padding:15px 12px;
+}
+#parallel-db .workers .worker b{display:block;line-height:1.3}
+#parallel-db .workers .worker small{min-height:40px;display:flex;align-items:center;justify-content:center;overflow-wrap:anywhere}
+#parallel-db .workers .progress{width:100%;flex-shrink:0}
+#parallel-db .partition{display:flex;justify-content:center;align-items:stretch;gap:8px;width:100%;margin:14px auto}
+#parallel-db .partition span{flex:1 1 0;min-width:0;display:flex;align-items:center;justify-content:center;min-height:38px;box-sizing:border-box}
+#parallel-db .mergeLine{margin:5px auto 0;min-height:34px}
+#parallel-db .result{width:min(100%,320px);box-sizing:border-box;align-self:center;margin:0 auto}
+#parallel-db .explain{width:100%;box-sizing:border-box;line-height:1.7}
+#parallel-db .diagram .flowRow{flex-wrap:nowrap}
+#parallel-db .diagram .node{flex:0 1 155px;min-width:100px}
+.footer{
+ min-height:190px;box-sizing:border-box;padding:58px 20px 62px!important;
+ display:flex;align-items:center;justify-content:center;
+ background:radial-gradient(ellipse at 50% 0%,rgba(92,240,213,.12),transparent 58%),linear-gradient(180deg,rgba(14,31,48,.5),rgba(5,14,25,.95));
+ border-top:1px solid rgba(120,210,220,.24);font-size:clamp(1.25rem,2.3vw,1.8rem)!important;
+ letter-spacing:.04em;font-weight:800;color:#d6f7f0!important;
+ text-shadow:0 0 24px rgba(92,240,213,.2);position:relative;overflow:hidden;
+}
+.footer:before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:min(240px,45vw);height:1px;background:linear-gradient(90deg,transparent,#5cf0d5,transparent)}
+.footer .wrap{padding:12px 20px;border:1px solid rgba(92,240,213,.16);border-radius:18px;background:rgba(16,39,57,.38);backdrop-filter:blur(12px);box-shadow:0 12px 45px rgba(0,0,0,.18)}
+@media(max-width:820px){
+ #parallel-db .diagram .flowRow{flex-wrap:wrap}
+ #parallel-db .workers{gap:10px}
+ #parallel-db .workers .worker{flex-basis:145px}
+ .footer{min-height:160px;padding:44px 16px!important}
+}
+@media(max-width:480px){
+ #parallel-db .workers .worker{flex-basis:calc(50% - 6px);max-width:calc(50% - 5px);padding:12px 8px}
+ #parallel-db .partition{gap:4px}
+ #parallel-db .partition span{font-size:.68rem;padding:8px 2px}
+}
+
+/* Fade the entire top navigation bar after the intro scrolls away */
+header{opacity:1;transform:translateY(0);filter:blur(0);transition:opacity .55s ease,transform .55s ease,filter .55s ease}
+header.header-faded{opacity:0;transform:translateY(-8px);filter:blur(4px);pointer-events:none}
+@media(prefers-reduced-motion:reduce){header{transition:none}}
+</style>
+</head>
+<body>
+<header><div class="wrap nav"><a class="logo" href="#top">DBMS <span>/ VISUAL LAB</span></a><nav class="navlinks"><a href="#client-server">Client–Server</a><a href="#parallel-db">Parallel Databases</a></nav></div></header>
+<main class="wrap" id="top">
+<section class="hero" style="border:0">
+<div><div class="eyebrow">Database management systems</div><h1>See the system.<br><span class="gradient">Follow the flow.</span></h1><p>Explore how applications communicate with servers and how parallel databases divide large tasks into smaller jobs. Move through the diagrams and watch each step happen.</p><div class="heroActions"><a href="#client-server"><button class="primary">Explore Client–Server ↓</button></a><a href="#parallel-db"><button>Explore Parallel DB ↓</button></a></div></div>
+<div class="visual"><div class="ring"></div><div class="ring r2"></div><div class="floatNode fn1"><b>Client</b><small>request</small></div><div class="floatNode fn2"><b>Server</b><small>process</small></div><div class="floatNode fn3"><b>Workers A · B · C</b><small>parallel tasks</small></div><i class="particle p1"></i><i class="particle p2"></i></div>
+</section>
+
+<section id="client-server" class="reveal"><div class="sectionTitle"><div><div class="eyebrow">01 / Architecture</div><h2>Client–Server Architecture</h2></div><p>Follow a student checking college results. Watch the request travel from the client to the application server and database, then watch the response return.</p></div>
+<div class="flowLab glass">
+ <div class="labTop"><div><span class="liveDot"></span><span class="badge">Animated request journey</span><div class="muted smallgap">Example: checking college exam results</div></div><div class="labControls"><label class="srOnly" for="csExample">Choose example</label><select id="csExample"><option value="results">Check college results</option><option value="page">Open a webpage</option><option value="login">Sign in to an app</option></select><button class="primary" id="csPlay">▶ Play full flow</button></div></div>
+ <div class="labCanvas"><div class="networkGrid"></div>
+  <div class="journey">
+   <div class="station" id="csClient"><span class="num">01</span><div class="stationIcon">💻</div><b>Client</b><small>Browser / mobile app</small></div>
+   <div class="wire" id="csWire1"><span class="wireLabel">Request</span></div>
+   <div class="station" id="csApp"><span class="num">02</span><div class="stationIcon">⚙️</div><b>Application server</b><small>Checks rules and processes</small></div>
+   <div class="wire" id="csWire2"><span class="wireLabel">Query</span></div>
+   <div class="station" id="csDatabase"><span class="num">03</span><div class="stationIcon">🗄️</div><b>Database server</b><small>Finds the records</small></div>
+  </div>
+  <div class="returnBanner" id="csReturn"><span>↶</span><div><b>Response returns to the client</b><small>Database → application server → browser</small></div><span class="returnPulse"></span></div>
+  <div class="stepInfo"><div class="explainCard"><div class="stepCount" id="csStepCount">READY · 0 / 5</div><h3 id="csStepTitle">Ready to follow a request?</h3><p id="csStepText">Press Play full flow or Next step. The active component lights up as the request moves through the system.</p></div><div class="traceCard" id="csTrace">[system] Simulation ready\n[client] Waiting for a request…</div></div>
+  <div class="flowLegend"><span><i class="legendDot" style="background:#5cf0d5"></i>Request</span><span><i class="legendDot" style="background:#76aaff"></i>Processing</span><span><i class="legendDot" style="background:#8df3b0"></i>Response</span></div>
+ </div>
+ <div class="labFooter"><div class="progressDots" id="csDots"><i></i><i></i><i></i><i></i><i></i></div><div style="display:flex;gap:8px"><button id="csReset">↺ Reset</button><button id="csNext" class="primary">Next step →</button></div></div>
+</div>
+<div class="commonHeading reveal"><span class="eyebrow">Understand the components</span><h3>Three layers of a typical web application</h3><p class="muted">Each layer has a clear responsibility, and the response travels back toward the client.</p></div>
+<div class="detailCards reveal"><article class="info glass"><span class="cardIcon">💻</span><h3>Client</h3><p>The browser or app the user interacts with. It sends a request and displays the response.</p></article><article class="info glass"><span class="cardIcon">⚙️</span><h3>Application server</h3><p>Runs application logic, validates input, checks permissions, and asks the database for the required information.</p></article><article class="info glass"><span class="cardIcon">🗄️</span><h3>Database server</h3><p>Stores organised data, executes queries, and returns matching records to the application server.</p></article></div>
+<div class="tierGrid reveal"><article class="tier glass"><h3>Two-tier architecture</h3><div class="miniFlow"><span class="miniBox">Client</span><span>⟷</span><span class="miniBox">Server / database</span></div><p class="muted">The client communicates directly with the server or database service. This can be simple, but direct database access can create security and maintenance challenges.</p></article><article class="tier glass"><h3>Three-tier architecture</h3><div class="miniFlow"><span class="miniBox">Client</span><span>⟷</span><span class="miniBox">Application</span><span>⟷</span><span class="miniBox">Database</span></div><p class="muted">The application layer separates the user interface from business logic and data management. This is common in web applications.</p></article></div>
+<div class="types reveal"><article class="info glass"><h3>Advantages</h3><p>Centralised management, shared services, easier updates, and support for many clients.</p></article><article class="info glass"><h3>Limitations</h3><p>Server or network failures can affect users. Heavy traffic can cause slowdowns, so security, backups, and capacity planning matter.</p></article><article class="info glass"><h3>Examples</h3><p>College portals, online banking, shopping websites, email, and social media.</p></article></div>
+</section>
+<section id="parallel-db" class="reveal"><div class="sectionTitle"><div><div class="eyebrow">02 / Performance</div><h2>Parallel Database Systems</h2></div><p>Instead of one worker doing all the work, a large query can be divided among several workers. Each processes a portion, then the partial results are combined.</p></div>
+<div class="twoCol"><div class="panel controls"><span class="badge">Live query simulation</span><h3>Run a large query</h3><p class="muted">Imagine a sales table with millions of rows. The goal is to calculate total sales by processing separate portions simultaneously.</p><label>Dataset size<select id="datasetSize"><option value="1000000">1 million rows</option><option value="3000000" selected>3 million rows</option><option value="9000000">9 million rows</option></select></label><label>Number of workers<select id="workerCount"><option value="2">2 workers</option><option value="3" selected>3 workers</option><option value="4">4 workers</option></select></label><button class="primary" id="runQuery">▶ Run parallel query</button><div class="status" id="queryStatus">Ready — no query running.</div><div class="console" id="queryLog">[coordinator] Waiting for a query…
+[workers] Idle</div></div>
+<div class="panel diagram"><div class="flowRow"><div class="node" id="queryNode"><b>SQL query</b><small>SUM(sales)</small></div><span class="arrow" id="splitArrow">⟶</span><div class="node" id="coordNode"><b>Coordinator</b><small>Plan and split work</small></div></div><div class="partition" id="partitions"><span>Partition A</span><span>Partition B</span><span>Partition C</span></div><div class="workers" id="workers"><div class="worker"><b>Worker A</b><small>Waiting for rows</small><div class="progress"><i></i></div></div><div class="worker"><b>Worker B</b><small>Waiting for rows</small><div class="progress"><i></i></div></div><div class="worker"><b>Worker C</b><small>Waiting for rows</small><div class="progress"><i></i></div></div></div><div class="mergeLine" id="mergeLine">↓</div><div class="result" id="finalResult"><b>Combine partial results</b><div class="muted">Waiting for workers…</div></div><div class="explain" id="queryExplain">Start the simulation to see the coordinator assign partitions, workers process them, and the final result get combined.</div></div></div>
+<div class="commonHeading reveal"><span class="eyebrow">Who does the work?</span><h3>Coordinator vs. workers</h3><p class="muted">Think of the coordinator as the organiser and the workers as the processing units. They are software components, not people.</p></div>
+<div class="detailCards reveal"><article class="info glass"><span class="cardIcon">🧭</span><h3>Coordinator</h3><p>Plans or coordinates query execution, assigns portions of work, tracks progress, and combines partial results when needed. Depending on the database, it may be a process or part of a query engine.</p></article><article class="info glass"><span class="cardIcon">⚡</span><h3>Workers</h3><p>Execution units that process assigned parts of a query. A worker may be a process, thread, or task running on a CPU core or a separate node.</p></article><article class="info glass"><span class="cardIcon">🧠</span><h3>Not the same as a CPU core</h3><p>A CPU core is hardware. A worker is software work being executed. Workers use CPU time, but one worker is not necessarily one dedicated core.</p></article></div>
+<div class="sectionNote"><strong>Important:</strong> the animation illustrates the idea, not a real benchmark. Adding workers does not guarantee a proportional speed-up: communication, uneven partitions, and coordination add overhead.</div>
+<div class="commonHeading reveal"><span class="eyebrow">Architecture patterns</span><h3>Three ways to organise processing resources</h3><p class="muted">The key difference is what processors share: memory, disks, or neither.</p></div>
+<div class="architecture reveal">
+ <article class="info glass archCard"><h3>Shared memory</h3><div class="archVisual"><div class="archCpu">CPU 1</div><div class="archCpu">CPU 2</div><div class="archCpu">CPU 3</div><div class="archBus">Shared main memory</div><div class="archDisk">Shared disk</div></div><p>Processors share main memory and disks. Communication can be fast, but shared resources may become bottlenecks.</p></article>
+ <article class="info glass archCard"><h3>Shared disk</h3><div class="archVisual"><div class="archNode"><b>Node A</b><small>CPU + private RAM</small></div><div class="archNode"><b>Node B</b><small>CPU + private RAM</small></div><div class="archNode"><b>Node C</b><small>CPU + private RAM</small></div><div class="archBus">Network / coordination</div><div class="archDisk">Common shared storage</div></div><p>Each node has private memory, but nodes access shared disks. Storage contention and coordination can limit performance.</p></article>
+ <article class="info glass archCard"><h3>Shared nothing</h3><div class="archVisual threeNodes"><div class="archNode"><b>Node A</b><small>CPU · RAM · Disk</small></div><div class="archNode"><b>Node B</b><small>CPU · RAM · Disk</small></div><div class="archNode"><b>Node C</b><small>CPU · RAM · Disk</small></div><div class="archBus">Network between nodes</div></div><p>Each node owns its processor, memory, and storage. It can scale well, but data distribution and network communication matter.</p></article>
+</div>
+<div class="commonHeading reveal"><span class="eyebrow">Execution strategies</span><h3>Types of parallelism</h3><p class="muted">Choose a type and run its animation to see the difference.</p></div>
+<div class="panel glass parallelismLab reveal">
+ <div class="parallelTabs"><button class="parallelTab active" data-kind="inter">Inter-query</button><button class="parallelTab" data-kind="intra">Intra-query</button><button class="primary" id="runParallelism">▶ Run animation</button></div>
+ <div class="parallelViz" id="parallelViz">
+  <div class="parallelSource" id="parallelSource">Separate queries arrive</div>
+  <div class="parallelTrack" id="parallelTrack"><div class="parallelTask">Query A</div><div class="parallelTask">Query B</div><div class="parallelTask">Query C</div></div>
+  <div class="parallelMerge" id="parallelMerge">Different jobs run concurrently</div>
+ </div>
+ <p class="muted" id="parallelExplain">Inter-query parallelism: different queries execute at the same time. This helps when many users submit separate requests.</p>
+</div>
+<div class="panel reveal" style="margin-top:17px"><span class="badge">Data partitioning</span><h3>How can a database divide rows?</h3><div class="types"><article class="info"><h3>Range partitioning</h3><p>Rows are grouped by ranges, such as dates or numeric IDs.</p></article><article class="info"><h3>Hash partitioning</h3><p>A hash function determines which partition receives each row.</p></article><article class="info"><h3>Round-robin partitioning</h3><p>Rows are distributed in turn across the available partitions.</p></article></div><p class="muted">Good partitioning balances work and reduces data movement. Parallel databases are useful for analytics, reporting, data warehousing, retail trends, and large banking workloads.</p></div>
+<div class="types reveal"><article class="info"><h3>Why it helps</h3><p>Suitable large queries can finish faster, and the system can handle large datasets and high workloads.</p></article><article class="info"><h3>What can go wrong?</h3><p>Uneven partitions leave some workers waiting. Data movement, coordination, and failures also add complexity.</p></article><article class="info"><h3>Key idea</h3><p>Divide the work sensibly, keep workers balanced, and combine partial results correctly.</p></article></div>
+</section>
+</main>
+<footer class="footer"><div class="wrap">kainj🙏</div></footer>
+<script>
+
+const $=s=>document.querySelector(s);
+// Fade the entire top navigation (brand + both topic tabs) after the intro scrolls away.
+const topHeader=document.querySelector("header");
+const introSection=document.querySelector(".hero");
+if(topHeader&&introSection&&"IntersectionObserver" in window){
+ const headerFadeObserver=new IntersectionObserver(entries=>{
+  const introVisible=entries.some(entry=>entry.isIntersecting);
+  topHeader.classList.toggle("header-faded",!introVisible);
+ },{threshold:0.08});
+ headerFadeObserver.observe(introSection);
+}else if(topHeader){
+ const fadeHeaderOnScroll=()=>topHeader.classList.toggle("header-faded",window.scrollY>220);
+ window.addEventListener("scroll",fadeHeaderOnScroll,{passive:true});fadeHeaderOnScroll();
+}
+
+const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+const csExamples={
+ results:[
+ {node:"csClient",title:"1. The student requests results",label:"CLIENT · REQUEST",text:"The student opens the college portal and chooses a semester. The browser sends a request over the network.",trace:"[client] GET /results?semester=6\n[network] Request sent over HTTPS"},
+ {node:"csApp",title:"2. The application processes the request",label:"APPLICATION SERVER",text:"The application checks the request, validates the semester, verifies the student's access, and decides which records are needed.",trace:"[application] Validate request\n[application] Check access permissions"},
+ {node:"csDatabase",title:"3. The database finds the records",label:"DATABASE SERVER",text:"The application asks the database for the student's result records. The database runs the query and returns matching data to the application.",trace:"[database] Run SELECT query\n[database] Matching result records returned"},
+ {node:"csApp",title:"4. The application prepares the response",label:"RESPONSE · PROCESSING",text:"The application prepares the result data in a format the browser can use, such as HTML or JSON, and creates the response.",trace:"[application] Format result data\n[application] Prepare response: 200 OK"},
+ {node:"csClient",title:"5. The response reaches the student",label:"RESPONSE · CLIENT",text:"The response travels back through the network. The browser receives it and displays the exam results on screen.",trace:"[response] 200 OK\n[client] Render results page ✓"}
+ ],
+ page:[
+ {node:"csClient",title:"1. The browser requests a webpage",label:"CLIENT · REQUEST",text:"The user enters a website address. The browser sends a request for the page.",trace:"[client] GET /index.html\n[network] Request sent"},
+ {node:"csApp",title:"2. The application handles it",label:"APPLICATION SERVER",text:"The server determines what page or content is needed. Static pages may be served directly; dynamic pages may require application logic.",trace:"[application] Resolve requested page\n[application] Check required resources"},
+ {node:"csDatabase",title:"3. Required data is retrieved",label:"DATABASE SERVER",text:"If the page needs changing or personalised data, the application queries the database. A static page might not need a database lookup.",trace:"[database] Retrieve page data if needed\n[database] Data ready"},
+ {node:"csApp",title:"4. The server prepares the response",label:"RESPONSE · PROCESSING",text:"The server returns HTML or data. The browser may make additional requests for images, CSS, and JavaScript.",trace:"[application] Prepare HTML response\n[application] Response ready"},
+ {node:"csClient",title:"5. The browser displays the page",label:"RESPONSE · CLIENT",text:"The browser receives the response and renders the webpage for the user.",trace:"[response] 200 OK\n[client] Render webpage ✓"}
+ ],
+ login:[
+ {node:"csClient",title:"1. The user submits sign-in",label:"CLIENT · REQUEST",text:"The app sends the sign-in request securely over HTTPS. Passwords should never be sent in plain text.",trace:"[client] POST /login\n[network] Secure request sent"},
+ {node:"csApp",title:"2. The application checks credentials",label:"APPLICATION SERVER",text:"The application validates the input and verifies the credentials using secure authentication logic.",trace:"[application] Validate input\n[auth] Verify credentials securely"},
+ {node:"csDatabase",title:"3. The account record is checked",label:"DATABASE SERVER",text:"The application retrieves the account data needed for verification. Well-designed systems store salted password hashes, not plaintext passwords.",trace:"[database] Retrieve account record\n[database] Account data returned"},
+ {node:"csApp",title:"4. The application prepares an outcome",label:"RESPONSE · PROCESSING",text:"If sign-in succeeds, the application may create a session. Otherwise, it returns a safe error message.",trace:"[application] Authentication decision complete\n[application] Prepare response"},
+ {node:"csClient",title:"5. The app displays the outcome",label:"RESPONSE · CLIENT",text:"The response returns to the app, which shows the next screen or an error message.",trace:"[response] Login result returned\n[client] Display outcome ✓"}
+ ]
+};
+let csIndex=-1,csBusy=false,csTimer=null;
+function resetClientVisual(){["csClient","csApp","csDatabase"].forEach(id=>{const e=$("#"+id);if(e)e.classList.remove("active","complete")});["csWire1","csWire2"].forEach(id=>{const e=$("#"+id);if(e)e.classList.remove("flowing")});$("#csReturn")?.classList.remove("running");[...($("#csDots")?.children||[])].forEach(d=>d.classList.remove("on"))}
+function showClientStep(i){
+ const scenario=csExamples[$("#csExample").value];csIndex=Math.max(0,Math.min(i,scenario.length-1));resetClientVisual();const s=scenario[csIndex];
+ $("#"+s.node)?.classList.add("active");
+ if(csIndex===0)$("#csWire1")?.classList.add("flowing");
+ if(csIndex===1)$("#csWire1")?.classList.add("flowing");
+ if(csIndex===2)$("#csWire2")?.classList.add("flowing");
+ if(csIndex>=3)$("#csReturn")?.classList.add("running");
+ $("#csStepCount").textContent=s.label+" · "+(csIndex+1)+" / "+scenario.length;
+ $("#csStepTitle").textContent=s.title;$("#csStepText").textContent=s.text;$("#csTrace").textContent=s.trace;
+ [...$("#csDots").children].forEach((d,j)=>d.classList.toggle("on",j===csIndex));
+ $("#csNext").textContent=csIndex===scenario.length-1?"Replay flow ↻":"Next step →";
+}
+function stopClient(){csBusy=false;if(csTimer)clearTimeout(csTimer);csTimer=null;$("#csPlay").textContent="▶ Play full flow";$("#csNext").disabled=false}
+function advanceClient(){const n=csExamples[$("#csExample").value].length;if(csIndex>=n-1){stopClient();return}showClientStep(csIndex+1);if(csBusy)csTimer=setTimeout(advanceClient,3800)}
+$("#csNext")?.addEventListener("click",()=>{if(csBusy){stopClient();return}if(csIndex<0||csIndex>=csExamples[$("#csExample").value].length-1)showClientStep(0);else showClientStep(csIndex+1)});
+$("#csPlay")?.addEventListener("click",()=>{if(csBusy){stopClient();return}csBusy=true;$("#csNext").disabled=true;showClientStep(csIndex<0||csIndex>=csExamples[$("#csExample").value].length-1?0:csIndex);$("#csPlay").textContent="⏸ Pause";csTimer=setTimeout(advanceClient,2800)});
+$("#csReset")?.addEventListener("click",()=>{stopClient();csIndex=-1;resetClientVisual();$("#csStepCount").textContent="READY · 0 / 5";$("#csStepTitle").textContent="Ready to follow a request?";$("#csStepText").textContent="Press Play full flow or Next step. The active component lights up as the request moves through the system." ;$("#csTrace").textContent="[system] Simulation ready\n[client] Waiting for a request…";$("#csNext").textContent="Next step →"});
+$("#csExample")?.addEventListener("change",()=>$("#csReset").click());
+
+// Parallel database query simulation
+let queryBusy=false;
+$("#runQuery")?.addEventListener("click",async()=>{
+ if(queryBusy)return;queryBusy=true;const btn=$("#runQuery");btn.disabled=true;
+ const count=Number($("#workerCount").value),size=Number($("#datasetSize").value),names=["A","B","C","D"],each=Math.ceil(size/count);
+ const workersWrap=$("#workers"),parts=$("#partitions"),log=$("#queryLog");workersWrap.innerHTML="";parts.innerHTML="";
+ for(let i=0;i<count;i++){
+  const w=document.createElement("div");w.className="worker";w.innerHTML="<b>Worker "+names[i]+"</b><small>Waiting for rows</small><div class='progress'><i></i></div>";workersWrap.appendChild(w);
+  const part=document.createElement("span");part.textContent="Partition "+names[i];parts.appendChild(part);
+ }
+ const workers=[...workersWrap.children],partEls=[...parts.children];
+ $("#queryNode").classList.remove("lit");$("#coordNode").classList.remove("lit");$("#finalResult").classList.remove("ready");$("#finalResult").innerHTML="<b>Combine partial results</b><div class='muted'>Waiting for workers…</div>";
+ log.textContent="[query] SELECT SUM(sales) FROM transactions;\n[coordinator] Planning work…";$("#queryStatus").textContent="Coordinator is planning the query…";$("#queryExplain").textContent="The coordinator decides how to divide the data into partitions.";
+ await wait(1250);$("#queryNode").classList.add("lit");$("#coordNode").classList.add("lit");
+ log.textContent+="\n[coordinator] Dataset: "+size.toLocaleString()+" rows\n[planner] Created "+count+" partitions.";
+ partEls.forEach((p,i)=>setTimeout(()=>p.classList.add("on"),i*320));
+ $("#queryStatus").textContent="Workers processing partitions…";$("#queryExplain").textContent="Each worker processes its own portion. They can work at the same time, then send their partial results back.";
+ await wait(1100);
+ const jobs=workers.map(async(w,i)=>{w.classList.add("active");w.querySelector("small").textContent="Processing about "+Math.min(each,size-i*each).toLocaleString()+" rows";log.textContent+="\n[worker "+names[i]+"] Processing partition "+names[i];await wait(2800+(i%2)*700);w.querySelector(".progress i").style.width="100%";w.classList.remove("active");w.classList.add("done");w.querySelector("small").textContent="Partial result ready ✓";log.textContent+="\n[worker "+names[i]+"] Partial total ready";});
+ await Promise.all(jobs);$("#queryStatus").textContent="Workers finished — coordinator combines results.";$("#finalResult").classList.add("ready");$("#finalResult").innerHTML="<b>Final result ready ✓</b><div class='muted'>"+count+" partial totals combined</div>";$("#queryExplain").textContent="The coordinator combines the partial totals into one final answer. This is a visual simulation, not a live database query.";log.textContent+="\n[coordinator] Combined partial totals\n[query] Complete ✓";$("#queryStatus").textContent="Complete — all partitions processed.";btn.disabled=false;queryBusy=false;
+});
+
+// Type of parallelism interactive animation
+let parallelKind="inter",parallelBusy=false;
+function setParallelKind(kind){parallelKind=kind;document.querySelectorAll(".parallelTab").forEach(b=>b.classList.toggle("active",b.dataset.kind===kind));$("#parallelSource").textContent=kind==="inter"?"Several independent queries arrive":"One large query arrives";$("#parallelTrack").innerHTML=kind==="inter"?'<div class="parallelTask">Query A<small>Customer lookup</small></div><div class="parallelTask">Query B<small>Sales report</small></div><div class="parallelTask">Query C<small>Inventory check</small></div>':'<div class="parallelTask">Task A<small>Partition 1</small></div><div class="parallelTask">Task B<small>Partition 2</small></div><div class="parallelTask">Task C<small>Partition 3</small></div>';$("#parallelMerge").textContent=kind==="inter"?"Different queries run concurrently":"Partial results are combined into one answer";$("#parallelExplain").textContent=kind==="inter"?"Inter-query parallelism: different queries execute at the same time. Useful when many users submit separate requests.":"Intra-query parallelism: one query is divided into tasks that execute at the same time. The partial results are combined to produce one answer."}
+document.querySelectorAll(".parallelTab").forEach(b=>b.addEventListener("click",()=>setParallelKind(b.dataset.kind)));
+$("#runParallelism")?.addEventListener("click",async()=>{if(parallelBusy)return;parallelBusy=true;const btn=$("#runParallelism"),tasks=[...$("#parallelTrack").children];btn.disabled=true;tasks.forEach(t=>t.classList.remove("run","done"));$("#parallelMerge").classList.remove("run");for(const task of tasks){task.classList.add("run");await wait(1250);task.classList.remove("run");task.classList.add("done")}$("#parallelMerge").classList.add("run");$("#parallelMerge").textContent=parallelKind==="inter"?"All three separate queries completed ✓":"Partial results combined — one final answer ✓";await wait(300);btn.disabled=false;parallelBusy=false;});
+
+// Reveal sections, but never leave content hidden if observers are unsupported.
+try{if("IntersectionObserver" in window){const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add("show");observer.unobserve(e.target)}}),{threshold:.08});document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));}else{document.querySelectorAll(".reveal").forEach(el=>el.classList.add("show"));}}catch(e){document.querySelectorAll(".reveal").forEach(el=>el.classList.add("show"))}
+try{if("IntersectionObserver" in window){const navObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)document.querySelectorAll(".navlinks a").forEach(a=>a.classList.toggle("active",a.hash==="#"+e.target.id))}),{rootMargin:"-35% 0px -55% 0px"});["client-server","parallel-db"].forEach(id=>{const e=document.getElementById(id);if(e)navObserver.observe(e)})}}catch(e){}
+</script>
+</body></html>
