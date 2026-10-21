@@ -273,17 +273,27 @@ button,.btn,.navlinks a{
  }
 }
 
+
+/* Small accessibility pass: slightly larger, clearer text without changing the layout. */
+body{font-size:17px;line-height:1.7}
+.nav a{font-size:1rem}
+.eyebrow{font-size:.84rem}
+label{font-size:.98rem}
+.badge{font-size:.82rem}
+.node small{font-size:.84rem}
+.console{font-size:.9rem}
+.worker small{font-size:.82rem}
+.miniBox{font-size:.84rem}
+.partition span{font-size:.82rem}
+.sectionNote{font-size:1.02rem;line-height:1.75}
+@media(max-width:560px){body{font-size:16.5px}}
+
 </style>
 </head>
 <body>
 <canvas id="starfield" aria-hidden="true"></canvas>
 <header><div class="wrap nav"><a class="logo" href="#top">DBMS <span>/ VISUAL LAB</span></a><nav class="navlinks"><a href="#client-server">Client–Server</a><a href="#parallel-db">Parallel Databases</a></nav></div></header>
 <main class="wrap" id="top">
-<section class="hero" style="border:0">
-<div><div class="eyebrow">Database management systems</div><h1>See the system.<br><span class="gradient">Follow the flow.</span></h1><p>Explore how applications communicate with servers and how parallel databases divide large tasks into smaller jobs. Move through the diagrams and watch each step happen.</p><div class="heroActions"><a href="#client-server"><button class="primary">Explore Client–Server ↓</button></a><a href="#parallel-db"><button>Explore Parallel DB ↓</button></a></div></div>
-<div class="visual"><div class="ring"></div><div class="ring r2"></div><div class="floatNode fn1"><b>Client</b><small>request</small></div><div class="floatNode fn2"><b>Server</b><small>process</small></div><div class="floatNode fn3"><b>Workers A · B · C</b><small>parallel tasks</small></div><i class="particle p1"></i><i class="particle p2"></i></div>
-</section>
-
 <section id="client-server" class="reveal"><div class="sectionTitle"><div><div class="eyebrow">01 / Architecture</div><h2>Client–Server Architecture</h2></div><p>Follow a student checking college results. Watch the request travel from the client to the application server and database, then watch the response return.</p></div>
 <div class="flowLab glass">
  <div class="labTop"><div><span class="liveDot"></span><span class="badge">Animated request journey</span><div class="muted smallgap">Example: checking college exam results</div></div><div class="labControls"><label class="srOnly" for="csExample">Choose example</label><select id="csExample"><option value="results">Check college results</option><option value="page">Open a webpage</option><option value="login">Sign in to an app</option></select><button class="primary" id="csPlay">▶ Play full flow</button></div></div>
@@ -312,7 +322,7 @@ button,.btn,.navlinks a{
 <div class="panel diagram"><div class="flowRow"><div class="node" id="queryNode"><b>SQL query</b><small>SUM(sales)</small></div><span class="arrow" id="splitArrow">⟶</span><div class="node" id="coordNode"><b>Coordinator</b><small>Plan and split work</small></div></div><div class="partition" id="partitions"><span>Partition A</span><span>Partition B</span><span>Partition C</span></div><div class="workers" id="workers"><div class="worker"><b>Worker A</b><small>Waiting for rows</small><div class="progress"><i></i></div></div><div class="worker"><b>Worker B</b><small>Waiting for rows</small><div class="progress"><i></i></div></div><div class="worker"><b>Worker C</b><small>Waiting for rows</small><div class="progress"><i></i></div></div></div><div class="mergeLine" id="mergeLine">↓</div><div class="result" id="finalResult"><b>Combine partial results</b><div class="muted">Waiting for workers…</div></div><div class="explain" id="queryExplain">Start the simulation to see the coordinator assign partitions, workers process them, and the final result get combined.</div></div></div>
 <div class="commonHeading reveal"><span class="eyebrow">Who does the work?</span><h3>Coordinator vs. workers</h3><p class="muted">Think of the coordinator as the organiser and the workers as the processing units. They are software components, not people.</p></div>
 <div class="detailCards reveal"><article class="info glass"><span class="cardIcon">🧭</span><h3>Coordinator</h3><p>Plans or coordinates query execution, assigns portions of work, tracks progress, and combines partial results when needed. Depending on the database, it may be a process or part of a query engine.</p></article><article class="info glass"><span class="cardIcon">⚡</span><h3>Workers</h3><p>Execution units that process assigned parts of a query. A worker may be a process, thread, or task running on a CPU core or a separate node.</p></article><article class="info glass"><span class="cardIcon">🧠</span><h3>Not the same as a CPU core</h3><p>A CPU core is hardware. A worker is software work being executed. Workers use CPU time, but one worker is not necessarily one dedicated core.</p></article></div>
-<div class="sectionNote"><strong>Important:</strong> the animation illustrates the idea, not a real benchmark. Adding workers does not guarantee a proportional speed-up: communication, uneven partitions, and coordination add overhead.</div>
+<div class="sectionNote"><strong>Remember:</strong> This animation is only an example, not a real speed test. Adding more workers does not always make a query faster. Workers may need to wait for data, share information, or wait for the coordinator.</div>
 <div class="commonHeading reveal"><span class="eyebrow">Architecture patterns</span><h3>Three ways to organise processing resources</h3><p class="muted">The key difference is what processors share: memory, disks, or neither.</p></div>
 <div class="architecture reveal">
  <article class="info glass archCard"><h3>Shared memory</h3><div class="archVisual"><div class="archCpu">CPU 1</div><div class="archCpu">CPU 2</div><div class="archCpu">CPU 3</div><div class="archBus">Shared main memory</div><div class="archDisk">Shared disk</div></div><p>Processors share main memory and disks. Communication can be fast, but shared resources may become bottlenecks.</p></article>
@@ -337,20 +347,6 @@ button,.btn,.navlinks a{
 <script>
 
 const $=s=>document.querySelector(s);
-// Fade the entire top navigation (brand + both topic tabs) after the intro scrolls away.
-const topHeader=document.querySelector("header");
-const introSection=document.querySelector(".hero");
-if(topHeader&&introSection&&"IntersectionObserver" in window){
- const headerFadeObserver=new IntersectionObserver(entries=>{
-  const introVisible=entries.some(entry=>entry.isIntersecting);
-  topHeader.classList.toggle("header-faded",!introVisible);
- },{threshold:0.08});
- headerFadeObserver.observe(introSection);
-}else if(topHeader){
- const fadeHeaderOnScroll=()=>topHeader.classList.toggle("header-faded",window.scrollY>220);
- window.addEventListener("scroll",fadeHeaderOnScroll,{passive:true});fadeHeaderOnScroll();
-}
-
 const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 const csExamples={
  results:[
